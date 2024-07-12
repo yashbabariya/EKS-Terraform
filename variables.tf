@@ -71,3 +71,46 @@ variable "addons" {
     version = string
   }))
 }
+
+
+// MongoDB Databases
+
+variable "namespace" {
+  type        = string
+  description = "database deployment namespace name"
+}
+
+variable "mongodb_rootuser_name" {
+  type        = string
+  description = "MongoDB RootUser name"
+}
+
+variable "mongodb_rootuser_password" {
+  type        = string
+  description = "MongoDB RootUser password."
+}
+
+variable "replicacount" {
+  type        = number
+  description = "replicaCount Number of MongoDB nodes"
+}
+
+variable "mongodb_persistence_size" {
+  type        = string
+  description = "MongoDB Persistence size"
+}
+
+variable "mongodb_service_type" {
+  type        = string
+  description = "Kubernetes Service type"
+}
+
+variable "mongodb_chart_version" {
+  type        = string
+  description = "MongoDB helm chart version"
+}
+
+variable "mongodb_pvc_storage_class" {
+  type        = string
+  description = "Mongodb PVC storage Class"
+}

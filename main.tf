@@ -85,7 +85,7 @@ module "ALB-controller" {
   oidc_connector_arn = module.IAM-oidc-provider.oidc_connector_arn
   cluster_name       = var.cluster_name
   depends_on         = [module.EKS-nodegroup]
-  vpc_id = module.vpc.vpc_id
+  vpc_id             = module.vpc.vpc_id
 }
 
 module "EBS-csi-driver" {
@@ -94,4 +94,19 @@ module "EBS-csi-driver" {
   oidc_connector_arn = module.IAM-oidc-provider.oidc_connector_arn
   addons             = var.addons
   depends_on         = [module.EKS-nodegroup, module.ALB-controller]
+}
+
+module "mongodb-database" {
+  source           = "./modules/Databases/mongodb"
+  region           = var.region
+  cluster_name     = var.cluster_name
+  namespace        = var.namespace
+  rootuser_name    = var.mongodb_rootuser_name
+  rootpassword     = var.mongodb_rootuser_password
+  replicacount     = var.replicacount
+  persistence_size = var.mongodb_persistence_size
+  service_type     = var.mongodb_service_type
+  chart_version    = var.mongodb_chart_version
+  storage_class    = var.mongodb_pvc_storage_class
+  depends_on       = [module.EBS-csi-driver]
 }
