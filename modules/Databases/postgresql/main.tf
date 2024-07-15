@@ -1,4 +1,3 @@
-
 # Execute Helm command to add the bitnami repository & install rabbitmq.
 resource "null_resource" "add_bitnami_repository" {
   provisioner "local-exec" {
@@ -44,26 +43,6 @@ resource "helm_release" "mongodb" {
   set {
     name = "replicaCount"
     value = var.replicacount
-  }
-
-  set {
-    name = "externalAccess.enabled"
-    value = true
-  }
-
-  set {
-    name = "externalAccess.autoDiscovery.enabled"
-    value = true
-  }
-
-  set {
-    name = "serviceAccount.create"
-    value = true
-  }
-
-  set {
-    name = "serviceAccount.automountServiceAccountToken"
-    value = true
   }
 
   set {
