@@ -41,16 +41,6 @@ resource "helm_release" "mongodb" {
   }
 
   set {
-    name = "replicaCount"
-    value = var.replicacount
-  }
-
-  set {
-    name = "rbac.create"
-    value = true
-  }
-
-  set {
     name = "externalAccess.service.type"
     value = var.service_type
   }
