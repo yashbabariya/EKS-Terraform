@@ -1,7 +1,7 @@
 
 # Download an IAM policy for the AWS Load Balancer Controller
 data "http" "AWSLoadBalancerControllerIAMPolicy" {
-  url = "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.7/docs/install/iam_policy.json"
+  url = "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy.json"
 
   request_headers = {
     Accept = "application/json"
@@ -9,7 +9,7 @@ data "http" "AWSLoadBalancerControllerIAMPolicy" {
 }
 
 data "http" "AWSLoadBalancerControllerAdditionalIAMPolicy" {
-  url = "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.7/docs/install/iam_policy_v1_to_v2_additional.json"
+  url = "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy_v1_to_v2_additional.json"
   request_headers = {
     Accept = "application/json"
   }

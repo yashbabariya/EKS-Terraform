@@ -63,6 +63,11 @@ variable "nodegroup_min_size" {
   description = "node group scaling min size"
 }
 
+variable "nodegroup_ssh_key_name" {
+  type = string
+  description = "NodeGroup Instance SSH Key name"
+}
+
 // EBS-CSI Driver Add-on
 
 variable "addons" {
@@ -72,10 +77,16 @@ variable "addons" {
   }))
 }
 
+// Global Database values
+variable "global_storageclass" {
+  type        = string
+  description = "PVC StorageClass name"
+}
+
 
 // MongoDB Databases
 
-variable "namespace" {
+variable "mongodb_namespace" {
   type        = string
   description = "database deployment namespace name"
 }
@@ -84,6 +95,12 @@ variable "mongodb_rootuser_name" {
   type        = string
   description = "MongoDB RootUser name"
 }
+
+variable "mongodb_architecture" {
+  type        = string
+  description = "architecture MongoDB architecture (`standalone` or `replicaset`)"
+}
+
 
 variable "mongodb_rootuser_password" {
   type        = string
@@ -110,7 +127,84 @@ variable "mongodb_chart_version" {
   description = "MongoDB helm chart version"
 }
 
-variable "mongodb_pvc_storage_class" {
+// Postgresql
+
+variable "postgresql_namespace" {
   type        = string
-  description = "Mongodb PVC storage Class"
+  description = "Postgresql deployment namespace name"
+}
+
+variable "postgresql_password" {
+  type        = string
+  description = "Postgresql password"
+}
+
+variable "postgresql_chart_version" {
+  type        = string
+  description = "Postgresql helm chart version."
+}
+
+variable "postgresql_persistence_size" {
+  type        = string
+  description = "postgresql Persistence Size"
+}
+
+
+// Redis
+
+variable "redis_namespace" {
+  type        = string
+  description = "Redis Deployment namespace name"
+}
+
+variable "redis_chart_version" {
+  type        = string
+  description = "Redis helm chart version."
+}
+
+variable "redis_master_persistence_size" {
+  type        = string
+  description = "Redis master Persistence size"
+}
+
+variable "redis_replicas_persistence_size" {
+  type        = string
+  description = "Redis replicas persistence size"
+}
+
+// RabbitMq 
+variable "rabbitmq_chart_version" {
+  type        = string
+  description = "Rabbitmq helm chart version."
+}
+
+variable "rabbitmq_namespace" {
+  type        = string
+  description = "Rabbitmq deployment namespace name"
+}
+
+variable "rabbitmq_username" {
+  type        = string
+  description = "Rabbitmq Auth username"
+}
+
+variable "rabbitmq_password" {
+  type        = string
+  description = "Rabbitmq Auth user password "
+}
+
+variable "rabbitmq_communityplugins" {
+  type        = string
+  description = "communityPlugins List of Community plugins (URLs) to be downloaded during container initialization"
+}
+
+// default plugin name:- rabbitmq_auth_backend_ldap
+variable "rabbitmq_extraplugins" {
+  type        = string
+  description = "extraPlugins Extra plugins to enable"
+}
+
+variable "rabbitmq_persistence_size" {
+  type        = string
+  description = "Rabbitmq PVC persistence size"
 }

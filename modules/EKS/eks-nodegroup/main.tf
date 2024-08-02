@@ -18,6 +18,10 @@ resource "aws_eks_node_group" "eks-node-group" {
     min_size     = var.nodegroup_min_size
   }
 
+  remote_access {
+    ec2_ssh_key = "${var.ssh_key_name}"
+  }
+
   update_config {
     max_unavailable = 1
   }

@@ -14,5 +14,5 @@ variable "cluster_name" {
 
 variable "ports" {
   type    = list(number)
-  default = [443]
+  default = [443,22]
 }

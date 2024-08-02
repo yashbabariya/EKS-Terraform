@@ -39,3 +39,8 @@ variable "nodegroup_min_size" {
   type = number
   description = "node group scaling min size"
 }
+
+variable "ssh_key_name" {
+  type = string
+  description = "ssh-key name"
+}

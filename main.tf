@@ -77,6 +77,7 @@ module "EKS-nodegroup" {
   nodegroup_desired_size = var.nodegroup_desired_size
   nodegroup_role_arn     = module.IAM.node-group-role-arn
   instance_types         = var.instance_types
+  ssh_key_name = var.nodegroup_ssh_key_name
   depends_on             = [module.EKS-cluster, module.IAM]
 }
 
@@ -84,8 +85,8 @@ module "ALB-controller" {
   source             = "./modules/EKS/alb-controller"
   oidc_connector_arn = module.IAM-oidc-provider.oidc_connector_arn
   cluster_name       = var.cluster_name
-  depends_on         = [module.EKS-nodegroup]
   vpc_id             = module.vpc.vpc_id
+  depends_on         = [module.EKS-nodegroup]
 }
 
 module "EBS-csi-driver" {
@@ -93,20 +94,60 @@ module "EBS-csi-driver" {
   cluster_name       = var.cluster_name
   oidc_connector_arn = module.IAM-oidc-provider.oidc_connector_arn
   addons             = var.addons
-  depends_on         = [module.EKS-nodegroup, module.ALB-controller]
+  depends_on         = [module.ALB-controller]
 }
 
 module "mongodb-database" {
   source           = "./modules/Databases/mongodb"
   region           = var.region
   cluster_name     = var.cluster_name
-  namespace        = var.namespace
+  namespace        = var.mongodb_namespace
   rootuser_name    = var.mongodb_rootuser_name
   rootpassword     = var.mongodb_rootuser_password
   replicacount     = var.replicacount
   persistence_size = var.mongodb_persistence_size
   service_type     = var.mongodb_service_type
   chart_version    = var.mongodb_chart_version
-  storage_class    = var.mongodb_pvc_storage_class
+  storage_class    = var.global_storageclass
+  architecture     = var.mongodb_architecture
   depends_on       = [module.EBS-csi-driver]
+}
+
+module "postgresql-database" {
+  source           = "./modules/Databases/postgresql"
+  namespace        = var.postgresql_namespace
+  chart_version    = var.postgresql_chart_version
+  persistence_size = var.postgresql_persistence_size
+  postgresPassword = var.postgresql_password
+  storage_class    = var.global_storageclass
+  cluster_name     = var.cluster_name
+  region           = var.region
+  depends_on       = [module.mongodb-database]
+}
+
+module "redis-database" {
+  source                   = "./modules/Databases/redis"
+  namespace                = var.redis_namespace
+  chart_version            = var.redis_chart_version
+  master_persistence_size  = var.redis_master_persistence_size
+  replica_persistence_size = var.redis_replicas_persistence_size
+  storage_class            = var.global_storageclass
+  cluster_name             = var.cluster_name
+  region                   = var.region
+  depends_on               = [module.postgresql-database]
+}
+
+module "rabbitmq-database" {
+  source           = "./modules/Databases/rabbitmq"
+  namespace        = var.rabbitmq_namespace
+  region           = var.region
+  cluster_name     = var.cluster_name
+  persistence_size = var.rabbitmq_persistence_size
+  storage_class    = var.global_storageclass
+  username         = var.rabbitmq_username
+  password         = var.rabbitmq_password
+  communityplugins = var.rabbitmq_communityplugins
+  extraplugins     = var.rabbitmq_extraplugins
+  chart_version    = var.rabbitmq_chart_version
+  depends_on       = [module.redis-database]
 }

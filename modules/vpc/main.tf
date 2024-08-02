@@ -19,6 +19,7 @@ resource "aws_subnet" "public_subnet" {
   
   tags = {
     Name = "${var.name}-Subnet-Public : ${count.index + 1}"
+    "kubernetes.io/role/elb" = 1
   }
 
   depends_on = [aws_vpc.vpc]
@@ -32,6 +33,7 @@ resource "aws_subnet" "private_subnet" {
 
   tags = {
     Name = "${var.name}-Subnet-Private : ${count.index + 1}"
+    "kubernetes.io/role/internal-elb" = 1
   }
   depends_on = [aws_vpc.vpc]
 }
