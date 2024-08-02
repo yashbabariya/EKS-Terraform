@@ -64,7 +64,7 @@ variable "nodegroup_min_size" {
 }
 
 variable "nodegroup_ssh_key_name" {
-  type = string
+  type        = string
   description = "NodeGroup Instance SSH Key name"
 }
 

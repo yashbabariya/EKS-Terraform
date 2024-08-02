@@ -77,7 +77,7 @@ module "EKS-nodegroup" {
   nodegroup_desired_size = var.nodegroup_desired_size
   nodegroup_role_arn     = module.IAM.node-group-role-arn
   instance_types         = var.instance_types
-  ssh_key_name = var.nodegroup_ssh_key_name
+  ssh_key_name           = var.nodegroup_ssh_key_name
   depends_on             = [module.EKS-cluster, module.IAM]
 }
 
