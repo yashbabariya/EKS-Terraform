@@ -77,3 +77,12 @@ rabbitmq_password         = "<password>"
 rabbitmq_persistence_size = "3Gi"
 rabbitmq_communityplugins = "https://github.com/rabbitmq/rabbitmq-delayed-message-exchange/releases/download/3.10.0/rabbitmq_delayed_message_exchange-3.10.0.ez"
 rabbitmq_extraplugins     = "rabbitmq_delayed_message_exchange"
+
+//cockroachdb
+ami_name                          = "cockroachdb-ami"
+key_pair_name                     = "dev-virginia-test"
+aws_launch_template_image_id      = "ami-0e86e20dae9224db8"
+aws_launch_template_instance_type = "t2.micro"
+aws_autoscaling_group_name        = "cockroachdb"
+target_group_ports                = ["26257", "8080"]
+gitlab_instance_ip                = "<gitlab_instance_ip>"

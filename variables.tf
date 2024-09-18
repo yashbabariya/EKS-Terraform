@@ -208,3 +208,40 @@ variable "rabbitmq_persistence_size" {
   type        = string
   description = "Rabbitmq PVC persistence size"
 }
+
+
+// Cockroach
+variable "aws_launch_template_image_id" {
+  type        = string
+  description = "AWS launch template image_id"
+}
+
+variable "aws_launch_template_instance_type" {
+  type        = string
+  description = "AWS launch template instance_type."
+}
+
+variable "aws_autoscaling_group_name" {
+  type        = string
+  description = "AWS Autoscaling Group name"
+}
+
+variable "ami_name" {
+  type        = string
+  description = "AMI name"
+}
+
+variable "key_pair_name" {
+  type        = string
+  description = "ssh key pair name"
+}
+
+variable "target_group_ports" {
+  type        = set(string)
+  description = "Target group ports"
+}
+
+variable "gitlab_instance_ip" {
+  type        = string
+  description = "Gitlab Instance Public IP"
+}

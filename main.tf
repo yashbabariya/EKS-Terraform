@@ -9,11 +9,17 @@ module "vpc" {
 }
 
 module "security_group" {
-  source               = "./modules/EKS/security-group"
-  natgateway_public_ip = module.vpc.nat_gateway_public_ip
-  cluster_name         = var.cluster_name
-  vpc_id               = module.vpc.vpc_id
-  depends_on           = [module.vpc]
+  source                     = "./modules/security-groups"
+  natgateway_public_ip       = module.vpc.nat_gateway_public_ip
+  cluster_name               = var.cluster_name
+  vpc_id                     = module.vpc.vpc_id
+  my_ip                      = var.my_ip
+  depends_on                 = [module.vpc]
+  ec2_template_name          = var.aws_autoscaling_group_name
+  lb_name                    = var.aws_autoscaling_group_name
+  aws_autoscaling_group_name = var.aws_autoscaling_group_name
+  target_group_ports         = var.target_group_ports
+  gitlab_instance_ip         = var.gitlab_instance_ip
 }
 
 module "IAM" {
@@ -150,4 +156,19 @@ module "rabbitmq-database" {
   extraplugins     = var.rabbitmq_extraplugins
   chart_version    = var.rabbitmq_chart_version
   depends_on       = [module.redis-database]
+}
+
+module "cockroachdb-database" {
+  source                            = "./modules/Databases/cockroachdb"
+  aws_launch_template_image_id      = var.aws_launch_template_image_id
+  aws_launch_template_instance_type = var.aws_launch_template_instance_type
+  asg_security_group_id             = module.security_group.asg_security_group
+  lb_security_group_id              = module.security_group.lb_security_group
+  aws_autoscaling_group_name        = var.aws_autoscaling_group_name
+  public_subnet_ids                 = module.vpc.public_subnet_id
+  vpc_id                            = module.vpc.vpc_id
+  depends_on                        = [module.security_group, module.vpc]
+  key_pair_name                     = var.key_pair_name
+  ami_name                          = var.ami_name
+  target_group_ports                = var.target_group_ports
 }
